@@ -1,0 +1,51 @@
+<ons-page id="device">
+    <div class="ble-not-connected" style="display: none;">
+        <ons-list id="ble-devices">
+            <ons-list-item class="general">
+                <ons-button id="refreshDeviceList">Refresh device list</ons-button>
+            </ons-list-item>
+            <ons-list-header>Gevonden bluetooth devices</ons-list-header>
+            <div id="ble-found-devices">
+                <ons-list-item>
+                    <em>Geen gevonden</em>
+                </ons-list-item>
+            </div>
+        </ons-list>
+    </div>
+    <div class="ble-connected" style="display: none;">
+        <ons-list>
+            <ons-list-header>Verbonden met</ons-list-header>
+            <ons-list-item id="ble-connected-device">
+                no device connected
+            </ons-list-item>
+            <ons-list-item class="general">
+                <ons-button id="disconnectDevice">Disconnect</ons-button>
+            </ons-list-item>
+        </ons-list>
+        <ons-list>
+            <ons-list-header>Ontvangen berichten</ons-list-header>
+            <div id="ble-received-messages">
+                <ons-list-item>
+                    <em>geen berichten</em>
+                </ons-list-item>
+            </div>
+        </ons-list>
+    </div>
+    <script>
+        ons.getScriptPage().onShow = function () {
+            bluetooth.toggleConnectionButtons();
+        };
+
+        ons.getScriptPage().onInit = function () {
+            $('#device').on('click', '#refreshDeviceList', function (e) {
+                bluetooth.refreshDeviceList();
+            });
+            $('#ble-found-devices').on('click', 'ons-list-item', function (e) {
+                bluetooth.connectDevice($(this).attr("data-device-id"), $(this).attr("data-device-name"));
+            });
+            $('#device').on('click', '#disconnectDevice', function (e) {
+                bluetooth.disconnectDevice(e);
+            });
+        };
+    </script>
+</ons-page>

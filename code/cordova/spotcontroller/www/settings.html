@@ -1,0 +1,86 @@
+<ons-page id="settings">
+    <ons-list>
+        <ons-list-header>MQTT settings</ons-list-header>
+        <ons-list-item class="input-items">
+            <div class="left">
+                host
+            </div>
+            <label class="center">
+                <ons-input id="settings-host" float placeholder="mqtt hostname"></ons-input>
+            </label>
+        </ons-list-item>
+        <ons-list-item class="input-items">
+            <div class="left">
+                port
+            </div>
+            <label class="center">
+                <ons-input id="settings-port" float placeholder="mqtt port"></ons-input>
+            </label>
+        </ons-list-item>
+        <ons-list-item class="input-items" style="display: none;">
+            <div class="left">
+                clientId
+            </div>
+            <label class="center">
+                <ons-input id="settings-clientId" float placeholder="mqtt clientId"></ons-input>
+            </label>
+        </ons-list-item>
+        <ons-list-item class="input-items">
+            <div class="left">
+                protocol
+            </div>
+            <label class="center">
+                <ons-input id="settings-protocolId" float placeholder="mqtt protocolId"></ons-input>
+            </label>
+        </ons-list-item>
+        <ons-list-item>
+            <ons-button class="savebutton">Save</ons-button>
+        </ons-list-item>
+        <ons-list-header>Debug commands</ons-list-header>
+        <ons-list-item class="debug">
+            <ons-button id="eraseMqtt">erase saved mqtt settings</ons-button>
+            <ons-button id="eraseUser">erase saved user</ons-button>
+        </ons-list-item>
+    </ons-list>
+    <script>
+        ons.getScriptPage().onShow = function () {
+            // document.getElementById('settings-host').value = mqttSettings.host;
+            // document.getElementById('settings-port').value = mqttSettings.port;
+            // document.getElementById('settings-clientId').value = mqttSettings.clientId;
+            // document.getElementById('settings-protocolId').value = mqttSettings.protocolId;
+        };
+
+        ons.getScriptPage().onInit = function () {
+            $('#settings').on('click', '.savebutton', function (e) {
+                var newSettings = {
+                    // host: $('#settings-host').val(),
+                    // port: $('#settings-port').val(),
+                    // clientId: $('#settings-clientId').val(),
+                    // protocolId: $('#settings-protocolId').val()
+                };
+
+                // newSettings = mqttclient.validateSettings(newSettings);
+
+                // if (newSettings) {
+                //     mqttclient.saveSettings(newSettings);
+                //     if (mqttclient.connected) {
+                //         mqttclient.disconnect();
+                //     }
+                //     window.setTimeout(function () {
+                //         mqttclient.initialize();
+                //     }, 1000);
+
+                //     ons.notification.alert({
+                //         message: 'New settings saved.',
+                //         title: 'Settings'
+                //     });
+                // } else {
+                //     ons.notification.alert({
+                //         message: 'Please check your settings.',
+                //         title: 'Error'
+                //     });
+                // }
+            });
+        };
+    </script>
+</ons-page>

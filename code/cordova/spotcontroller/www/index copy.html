@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="lib/OnsenUI/css/onsenui.css">
+    <link rel="stylesheet" type="text/css" href="lib/OnsenUI/css/onsen-css-components.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/joy.js"></script>
+    <title>SpotController</title>
+</head>
+
+<body>
+    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
+        <ons-page>
+            <ons-splitter id="appSplitter">
+                <ons-splitter-side id="logscreen" page="logs.html" swipeable side="right" collapse="" width="80%"></ons-splitter-side>
+                <ons-splitter-content page="tabbar.html"></ons-splitter-content>
+            </ons-splitter>
+        </ons-page>
+    </ons-navigator>
+
+    <template id="tabbar.html">
+        <ons-page id="tabbar-page">
+            <ons-toolbar>
+                <div class="center">home</div>
+                <div class="right">
+                    <ons-toolbar-button id="btnLogscreen">
+                        <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-tabbar swipeable id="appTabbar" position="auto">
+                <ons-tab label="home" icon="fa-home" page="home.html" active></ons-tab>
+                <ons-tab label="device" icon="fa-bluetooth" page="device.html"></ons-tab>
+                <ons-tab label="settings" icon="fa-wrench" page="settings.html"></ons-tab>
+            </ons-tabbar>
+
+            <script>
+                ons.getScriptPage().addEventListener('prechange', function (event) {
+                    if (event.target.matches('#appTabbar')) {
+                        event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute(
+                            'label');
+                    }
+                });
+
+                $('body').on('click', '#btnLogscreen', function (e) {
+                    document.getElementById('appSplitter').right.toggle();
+                });
+                $('body').on('click', 'a', function (e) {
+                    e.preventDefault();
+                    var page = $(this).attr('data-label');
+                    var pageItem = $('#appTabbar [label="' + page + '"]');
+                    document.querySelector('#appTabbar').setActiveTab($('ons-tab').index(pageItem));
+                });
+            </script>
+        </ons-page>
+    </template>
+
+    <template id="home.html">
+        <ons-page>
+            <ons-card>
+                <div class="title">Rover Controller</div>
+                <div id="joy3Div" style="width:200px;height:200px;margin:50px;position:fixed;bottom:30px;left:500px;"></div>
+                <div style="position:fixed;bottom:125px;left:750px;">
+                    Posizione X:<input id="joy3PosizioneX" type="text" /><br />
+                    Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
+                    Direzione:<input id="joy3Direzione" type="text" /><br />
+                    X :<input id="joy3X" type="text" /></br>
+                    Y :<input id="joy3Y" type="text" />
+                </div>
+                <!-- <div id="buttons-control">
+                    <ons-button id="button_up" class="console_button"><ons-icon icon="md-chevron-up"></ons-icon></ons-button>
+                    <ons-button id="button_down" class="console_button"><ons-icon icon="md-chevron-down"></ons-icon></ons-button>
+                    <ons-button id="button_left" class="console_button"><ons-icon icon="md-chevron-left"></ons-icon></ons-button>
+                    <ons-button id="button_right" class="console_button"><ons-icon icon="md-chevron-right"></ons-icon></ons-button>
+                    <ons-button id="button_stop" class="console_button"><ons-icon icon="md-stop"></ons-icon></ons-button>
+                </div>
+                <div id="buttons_settings">
+                    <ons-button id="button_sonar" class="console_button"><ons-icon id="icon_sonar" icon="md-eye"</ons-icon></ons-button>
+                </div> -->
+            </ons-card>
+            <script>
+                ons.getScriptPage().onInit = function () {
+                    $('#buttons-control').on('click', '#button_up', function (e) {
+                        controller.sendButton("f");
+                    })
+                    $('#buttons-control').on('click', '#button_down', function (e) {
+                        controller.sendButton("b");
+                    })
+                    $('#buttons-control').on('click', '#button_left', function (e) {
+                        controller.sendButton("l");
+                    })
+                    $('#buttons-control').on('click', '#button_right', function (e) {
+                        controller.sendButton("r");
+                    })
+                    $('#buttons-control').on('click', '#button_stop', function (e) {
+                        controller.sendButton("-");
+                    })
+
+                    $('#buttons_settings').on('click', '#button_sonar', function (e) {
+                        controller.toggleSonar();
+                    })
+
+                
+                    
+   
+                };
+            </script>
+            <script>
+                var joy3Param = { "title": "joystick3" };
+                var Joy3 = new JoyStick('joy3Div', joy3Param);
+
+                var joy3IinputPosX = document.getElementById("joy3PosizioneX");
+                var joy3InputPosY = document.getElementById("joy3PosizioneY");
+                var joy3Direzione = document.getElementById("joy3Direzione");
+                var joy3X = document.getElementById("joy3X");
+                var joy3Y = document.getElementById("joy3Y");
+
+                setInterval(function(){ joy3IinputPosX.value=Joy3.GetPosX(); }, 50);
+                setInterval(function(){ joy3InputPosY.value=Joy3.GetPosY(); }, 50);
+                setInterval(function(){ joy3Direzione.value=Joy3.GetDir(); }, 50);
+                setInterval(function(){ joy3X.value=Joy3.GetX(); }, 50);
+                setInterval(function(){ joy3Y.value=Joy3.GetY(); }, 50);
+                </script>
+        </ons-page>
+    </template>
+
+    <template id="logs.html">
+        <ons-page>
+            <ons-card>
+                <div class="title">Log</div>
+                <div id="logs" class="content">
+
+                </div>
+            </ons-card>
+        </ons-page>
+    </template>
+
+
+   
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="lib/OnsenUI/js/onsenui.min.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="lib/moment.min.js"></script>
+    <script type="text/javascript" src="js/debug.js"></script>
+    <script type="text/javascript" src="js/storage.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
+    <script type="text/javascript" src="js/bluetooth.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+
+</html>
