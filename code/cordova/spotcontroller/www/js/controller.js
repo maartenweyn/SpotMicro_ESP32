@@ -1,12 +1,12 @@
 var controller = {
     useSonar: true,
     rotationRanges: {
-        omega: 10,
+        omega: 30,
         phi: 10,
-        psi: 10,
+        psi: 25,
         xm: -50,
-        ym: 50,
-        zm: 50,
+        ym: -50,
+        zm: 40,
     },
     Joy1 : null,
     Joy2: null,
@@ -54,11 +54,11 @@ var controller = {
         // console.log("Joy2 " + Joy2X + " " + Joy2Y);
 
         omega = (controller.rotationRanges.omega * (Joy1X - 100) / 50).toFixed(0)
-        phi = (controller.rotationRanges.phi * (Joy1Y - 100) / 50).toFixed(0);
-        psi = 0;
+        phi = 0;
+        psi = (controller.rotationRanges.psi * (Joy1Y - 100) / 50).toFixed(0);
         zm = (controller.rotationRanges.xm * (Joy2X - 100) / 50).toFixed(0);
-        xm = (controller.rotationRanges.xm * (Joy2Y - 100) / 50).toFixed(0);
-        ym = 0;
+        xm = 0;
+        ym = (controller.rotationRanges.ym * (Joy2Y - 100) / 50).toFixed(0);
 
         var statusLine = '<div class="log-item">' +
             '<div>POSITION: (' + Joy1X + ', ' + Joy1Y + ') (' + Joy2X + ', ' + Joy2Y + ')' +  

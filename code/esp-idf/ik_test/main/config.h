@@ -28,6 +28,10 @@
 #define L4L4  14042.25 //L4*L4
 #define LL34  23865.9  //2*L3*L4
 
+#define SERVO_STEP_ANGLE 2
+#define MOTION_STEP_ANGLE 5
+#define MOTION_STEP_MOVEMENT 10
+
 extern const int16_t servo_min[12] ;
 extern const float servo_conversion[12] ;
 extern const float theta_range[3][2];

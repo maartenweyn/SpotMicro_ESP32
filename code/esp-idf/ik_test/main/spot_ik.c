@@ -88,13 +88,14 @@ void print_matrix(float * matrix, int n, int m, char* name) {
   }
 }
 
-void print_int_matrix(int16_t * matrix, int n, int m, char* name) {
+void print_int_matrix(int16_t * matrix, int n, int m, char* name, uint8_t newlines) {
   printf("Matrix %s:\n", name);
   for (int i=0;i<n;i++) {
     for (int j=0;j<m;j++)
       printf("%3d ", matrix[i*m + j]);
-    printf("\n");
+    if (newlines) printf("\n");
   }
+  if (!newlines) printf("\n");
 }
 
 esp_err_t body_IK(float omega, float phi, float psi, float xm, float ym, float zm) {
@@ -225,7 +226,7 @@ esp_err_t spot_IK(float omega, float phi, float psi, float xm, float ym, float z
   // print_matrix((float*) Q, 1, 4, "Q LF");
   ret += leg_IK((float*) Q, LEG_LF, (int16_t*) servoangles[0]);
   printf("leg_IK return %d\n", ret);
-  print_int_matrix((int16_t*) servo_angles[0], 1, 3, "servo_angles LF");
+  print_int_matrix((int16_t*) servo_angles[0], 1, 3, "servo_angles LF", 1);
 
 
 
