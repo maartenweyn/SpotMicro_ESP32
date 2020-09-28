@@ -12,61 +12,64 @@
 				<link rel="stylesheet" type="text/css" href="lib/OnsenUI/css/onsenui.css">
 				<link rel="stylesheet" type="text/css" href="lib/OnsenUI/css/onsen-css-components.min.css">
 				<link rel="stylesheet" type="text/css" href="css/index.css">
-		<style>
-*
-{
-	box-sizing: border-box;
-}
-/* body
-{
-	margin: 10px;
-	padding: 10px;
-	font-family: monospace;
-} */
-/* .row
-{
-	display: inline-flex;
-	clear: both;
-}
-.columnLateral
-{
-  float: left;
-  width: 15%;
-  min-width: 200px;
-}
-#joy2Div
-{
-	width:200px;
-	height:200px;
-	margin:50px
-}
-#joystick1
-{
-	border: 1px solid #FF0000;
-}
-#joystick2
-{
-	border: 1px solid #0000FF;
-} */
-		</style>
 		<script src="js/joy.js"></script>
 	</head>
 	<body>
+		<div id="headerbar">
+			<div id="ble_status" class="header_child"><i id="ble_button" class="fa fa-bluetooth" style="font-size:14px"></i> </div>
+			<div id="status" class="header_child">status</div>
+			<div id="spotposition" class="header_child">Position Unknown</div>
+			<div id="sleep_wake" class="header_child"><button id="sleep_wake_button">Sleep</button></div>
+		</div>
+
+		<div id="device" style="display: none;">
+			<div class="ble-not-connected" style="display: none;">
+					<ons-list id="ble-devices">
+							<ons-list-item class="general">
+									<ons-button id="refreshDeviceList">Refresh device list</ons-button>
+							</ons-list-item>
+							<ons-list-header>Found bluetooth devices</ons-list-header>
+							<div id="ble-found-devices">
+									<ons-list-item>
+											<em>No Spots</em>
+									</ons-list-item>
+							</div>
+					</ons-list>
+			</div>
+			<div class="ble-connected" style="display: none;">
+					<ons-list>
+							<ons-list-header>Connected to</ons-list-header>
+							<ons-list-item id="ble-connected-device">
+									no device connected
+							</ons-list-item>
+							<ons-list-item class="general">
+									<ons-button id="disconnectDevice">Disconnect</ons-button>
+							</ons-list-item>
+					</ons-list>
+					<!-- <ons-list>
+							<ons-list-header>Ontvangen berichten</ons-list-header>
+							<div id="ble-received-messages">
+									<ons-list-item>
+											<em>geen berichten</em>
+									</ons-list-item>
+							</div>
+					</ons-list> -->
+			</div>
+	</div>
 		
-        <!-- Example of two JoyStick integrated in the page structure -->
-        <div id="joy1Div" style="width:200px;height:200px;margin:50px;position:fixed;top:10px;left:50px;"></div>
-		<!-- <div style="position:fixed;bottom:10px;left:50px;">
-			X :<input id="joy1X" type="text" /></br>
-			Y :<input id="joy1Y" type="text" />
-        </div> -->
-        <div id="joy2Div" style="width:200px;height:200px;margin:50px;position:fixed;top:10px;right:50px;"></div>
-		<!-- <div style="position:fixed;bottom:10px;right:50px;">
-			X :<input id="joy2X" type="text" /></br>
-			Y :<input id="joy2Y" type="text" />
-		</div> -->
+		<div id="controls">
+			<div id="joy1Div" style="width:200px;height:200px;margin:50px;position:fixed;top:10px;left:50px;"></div>
+			<div id="joy2Div" style="width:200px;height:200px;margin:50px;position:fixed;top:10px;right:50px;"></div>
+			<div class="slidecontainer">
+				<input type="range" min="1" max="100" value="50" class="slider" id="slider1Div"  style="position:fixed;top:260px;left:100px;">
+			</div>
+			<div class="slidecontainer"></div>
+				<input type="range" min="1" max="100" value="50" class="slider-vertical" id="slider2Div"  style="position:fixed;top:160px;right:00px;">
+			</div>
+		</div>
 	
 
-		<div id="status" class="content"></div>
+		
 		<!-- <div id="logs" class="content"></div> -->
         
         <script type="text/javascript" src="cordova.js"></script>

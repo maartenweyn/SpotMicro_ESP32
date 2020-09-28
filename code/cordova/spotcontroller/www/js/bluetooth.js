@@ -187,8 +187,18 @@ var bluetooth = {
     onActuatorValue: function (data) {
         //data = new Uint8Array(data);
         var stringdata = toHexString(data, 12);
+
+        var data16 = new Int16Array(data);
+        omega   = data16[0];
+        phi     = data16[1];
+        psi     = data16[2];
+        x       = data16[3];
+        y       = data16[4];
+        z       = data16[5];
         
         debug.log("Actuator: " + stringdata);
+        html = '(' + omega + ',' + phi + ',' + psi + ',' + x + ',' + y + ',' + z + ')';
+        $('#spotposition').html(html);
     },
     onSensorValue: function (data) {
         // data = new Uint8Array(data);
@@ -231,11 +241,9 @@ var bluetooth = {
         console.log('current ble connection status: ' + ((connected) ? 'connected' : 'not connected'));
 
         if (connected) {
-            var html = '<ons-list-item>' +
-                '<span class="list-item__title">' + bluetooth.connectedDevice.name + '</span>' +
-                '<span class="list-item__subtitle">' + bluetooth.connectedDevice.id + '</span>' +
-                '</ons-list-item>';
+            var html = '<br>' + bluetooth.connectedDevice.name + '</br>' +  ' ' + bluetooth.connectedDevice.id ;
             $('#ble-connected-device').html(html);
+            $('#ble_button').html("Connected");
 
             $('.ble-not-connected').hide();
             $('.ble-connected').show();
@@ -243,6 +251,7 @@ var bluetooth = {
             $('#ble-connected-device').html('no device connected');
             $('.ble-not-connected').show();
             $('.ble-connected').hide();
+            $('#ble_button').html("Not connected");
         }
     },
     refreshSentMessageList: function () {

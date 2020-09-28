@@ -1,6 +1,7 @@
 var app = {
     user: {},
     debug: false,
+    currentView: 0, // 0: controls, 1: ble
     initialize: function () {
         console.log('app initialize');
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -11,6 +12,30 @@ var app = {
         app.bindEvents();
         bluetooth.initialize();
         controller.initialize();
+
+        bluetooth.toggleConnectionButtons();
+
+        $('#headerbar').on('click', '#ble_button', function (e) {
+            if (app.currentView == 0) {
+                $('#device').show();
+                $('#controls').hide();
+                app.currentView  = 1;
+            } else {
+                $('#device').hide();
+                $('#controls').show();
+                app.currentView  = 0;
+            }
+        });
+
+        $('#device').on('click', '#refreshDeviceList', function (e) {
+                bluetooth.refreshDeviceList();
+        });
+        $('#ble-found-devices').on('click', 'ons-list-item', function (e) {
+                bluetooth.connectDevice($(this).attr("data-device-id"), $(this).attr("data-device-name"));
+        });
+        $('#device').on('click', '#disconnectDevice', function (e) {
+                bluetooth.disconnectDevice(e);
+        });
     },
 
     bindEvents: function () {
