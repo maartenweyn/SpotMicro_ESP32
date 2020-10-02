@@ -27,7 +27,7 @@ static const float Trf2[4][4] = {{0, 0, 1, L/2},  {0, 1, 0, 0}, {-1, 0, 0, -W/2}
 static const float Tlb2[4][4] = {{0, 0, 1, -L/2},  {0, 1, 0, 0}, {-1, 0, 0, W/2},  {0, 0, 0, 1}}; //Fixed part of Tranformation Matrix Left Back
 static const float Tlf2[4][4] = {{0, 0, 1, L/2}, {0, 1, 0, 0}, {-1, 0, 0, W/2},  {0, 0, 0, 1}}; //Fixed part of Tranformation Matrix Left Front
 
-static float Lp[4][4] = {{80, -150, 100, 1}, {80, -150, -100, 1}, {-120, -150, 100, 1}, {-120, -150, -100, 1}};
+static float Lp[4][4] = {{80, -130, 100, 1}, {80, -130, -100, 1}, {-130, -130, 100, 1}, {-130, -130, -100, 1}};
 
 static const float Ix[4][4] = {{-1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
 

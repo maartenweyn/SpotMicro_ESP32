@@ -30,7 +30,8 @@
 
 #define SERVO_STEP_ANGLE 2
 #define MOTION_STEP_ANGLE 5
-#define MOTION_STEP_MOVEMENT 10
+#define MOTION_STEP_MOVEMENT 5
+#define MOTION_STEP_ALFA 0.20
 
 extern const int16_t servo_min[12] ;
 extern const float servo_conversion[12] ;

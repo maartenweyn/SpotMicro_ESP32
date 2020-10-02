@@ -320,6 +320,70 @@ void iterate_to_position() {
     set_new_orientation_act_value((int16_t) spot_position.omega, (int16_t) spot_position.phi, (int16_t) spot_position.psi, (int16_t) spot_position.xm, (int16_t) spot_position.ym, (int16_t) spot_position.zm);
 }
 
+void iterate_to_position_exponetial() {
+    ESP_LOGI(tag, "GOAL (%f,%f,%f - %f,%f,%f)", goal_position.omega, goal_position.phi, goal_position.psi, goal_position.xm, goal_position.ym, goal_position.zm);
+
+    do {
+        spot_position.set = false;
+        int diff = 0;
+
+        if (abs(goal_position.omega - spot_position.omega) < MOTION_STEP_ANGLE) {
+            spot_position.omega = goal_position.omega;
+        } else {
+            spot_position.set = true;
+            spot_position.omega = MOTION_STEP_ALFA * goal_position.omega + (1.0 - MOTION_STEP_ALFA)  *spot_position.omega;
+        }
+
+        if (abs(goal_position.phi - spot_position.phi) < MOTION_STEP_ANGLE) {
+            spot_position.phi = goal_position.phi;
+        } else {
+            spot_position.set = true;
+            spot_position.phi = MOTION_STEP_ALFA * goal_position.phi + (1.0 - MOTION_STEP_ALFA)  *spot_position.phi;
+        }
+
+        if (abs(goal_position.psi - spot_position.psi) < MOTION_STEP_ANGLE) {
+            spot_position.psi = goal_position.psi;
+        } else {
+            spot_position.set = true;
+            spot_position.psi = MOTION_STEP_ALFA * goal_position.psi + (1.0 - MOTION_STEP_ALFA)  * spot_position.psi;
+        }
+
+        if (abs(goal_position.xm - spot_position.xm) < MOTION_STEP_MOVEMENT) {
+            spot_position.xm = goal_position.xm;
+        } else {
+            spot_position.set = true;
+            spot_position.xm = MOTION_STEP_ALFA * goal_position.xm + (1.0 - MOTION_STEP_ALFA)  * spot_position.xm;
+        }
+
+        if (abs(goal_position.ym - spot_position.ym) < MOTION_STEP_MOVEMENT) {
+            spot_position.ym = goal_position.ym;
+        } else {
+            spot_position.set = true;
+            spot_position.ym = MOTION_STEP_ALFA * goal_position.ym + (1.0 - MOTION_STEP_ALFA)  * spot_position.ym;
+        }
+
+        if (abs(goal_position.zm - spot_position.zm) < MOTION_STEP_MOVEMENT) {
+            spot_position.zm = goal_position.zm;
+        } else {
+            spot_position.set = true;
+            spot_position.zm = MOTION_STEP_ALFA * goal_position.zm + (1.0 - MOTION_STEP_ALFA)  * spot_position.zm;
+        }
+
+        ESP_LOGI(tag, "CURRENT (%f,%f,%f - %f,%f,%f) %d", spot_position.omega, spot_position.phi, spot_position.psi, spot_position.xm, spot_position.ym, spot_position.zm, spot_position.set);
+        
+        esp_err_t ret = spot_IK(spot_position.omega*DEGREES2RAD, spot_position.phi*DEGREES2RAD, spot_position.psi*DEGREES2RAD, spot_position.xm, spot_position.ym, spot_position.zm, servo_angles_goal);
+        ESP_LOGD(tag, "Valid IK %d", ret==ESP_OK);
+        if (ret == ESP_OK) {
+            print_int_matrix((int16_t*) servo_angles_goal, 4, 3, "servo_angles_goal", false);
+            set_leg_servos();
+        }
+
+    } while (spot_position.set);
+
+
+    set_new_orientation_act_value((int16_t) spot_position.omega, (int16_t) spot_position.phi, (int16_t) spot_position.psi, (int16_t) spot_position.xm, (int16_t) spot_position.ym, (int16_t) spot_position.zm);
+}
+
 void task_ik(void *ignore)
 {
     ESP_LOGI(tag, "Executing on core %d", xPortGetCoreID());
