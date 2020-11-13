@@ -339,3 +339,40 @@ void disp_buf(uint16_t* buf, uint8_t len)
     printf("\n");
 }
 
+// OPTIMIZATION for SpotmicroESP32 by Michael Kubina
+
+/**
+ * @brief      Sets the On time for all channels to 0 to reduce data-overhead
+ *
+ * @param[in]  on    On time
+ * 
+ * @return     result of command
+ */
+esp_err_t setAllOnTimeZero()
+{
+    esp_err_t ret;
+
+    // use write word to ALLED_ON_L (auto-increment once) to set all LED_x's On Time to Zero
+    // no need, to call setPWM(channel, OnTime, OffTime) -> use setOptiPWM(channel, OffTime) instead
+    ret = generic_write_i2c_register_word(ALLLED_ON_L, 0);
+
+    return ret;
+}
+
+/**
+ * @brief      Sets the pulse of the servo pin
+ *
+ * @param[in]  num   The pin number
+ * @param[in]  pulse The pulse width
+ * 
+ * @return     result of command
+ */
+esp_err_t setPulse(uint8_t num, uint16_t pulse)
+{
+    esp_err_t ret;
+
+    uint8_t pinAddress = LED0_OFF_L + LED_MULTIPLYER * num;
+    ret = generic_write_i2c_register_word(pinAddress & 0xff, pulse);
+
+    return ret;
+}
